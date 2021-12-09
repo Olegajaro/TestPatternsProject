@@ -1,5 +1,5 @@
 //
-//  CourseDetailViewController.swift
+//  CourseDetailsViewController.swift
 //  TestPatternsProject
 //
 //  Created by Олег Федоров on 09.12.2021.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CourseDetailViewController: UIViewController {
+class CourseDetailsViewControllers: UIViewController {
     
     // MARK: - Properties
     
