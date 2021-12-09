@@ -7,16 +7,22 @@
 
 import UIKit
 
+private let reuseIdentifier = "CourseCell"
+
 class CourseListViewController: UITableViewController {
 
     // MARK: - Properties
+    
+    private var activityIndicator: UIActivityIndicatorView?
+    private var courses: [Course] = []
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .white
         setupNavigationBar()
+        configureTableView()
+        activityIndicator = showActivityIndicator(in: view)
     }
     
     // MARK: - Actions
@@ -26,8 +32,10 @@ class CourseListViewController: UITableViewController {
     private func setupNavigationBar() {
         title = "Courses"
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.tintColor = .white
         
         let navBarAppearance = UINavigationBarAppearance()
+        navBarAppearance.configureWithOpaqueBackground()
         
         navBarAppearance.backgroundColor = UIColor(red: 21/255, green: 101/255,
                                                    blue: 192/255, alpha: 194/255)
@@ -38,5 +46,51 @@ class CourseListViewController: UITableViewController {
         navigationController?.navigationBar.standardAppearance = navBarAppearance
         navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
     }
+    
+    private func configureTableView() {
+        tableView.register(CourseCell.self, forCellReuseIdentifier: reuseIdentifier)
+        tableView.rowHeight = 100
+    }
+    
+    private func showActivityIndicator(in view: UIView) -> UIActivityIndicatorView {
+        let activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.color = .black
+        activityIndicator.startAnimating()
+        activityIndicator.hidesWhenStopped = true
+        
+        view.addSubview(activityIndicator)
+        activityIndicator.centerX(inView: view,
+                                  topAnchor: view.safeAreaLayoutGuide.topAnchor,
+                                  paddingTop: 300)
+        
+        return activityIndicator
+    }
 }
 
+// MARK: - UITableViewDataSource
+
+extension CourseListViewController {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        4
+    }
+    
+    override func tableView(_ tableView: UITableView,
+                            cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier,
+                                                 for: indexPath) as! CourseCell
+        
+        cell.backgroundColor = .systemGray
+        
+        return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension CourseListViewController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let controller = CourseDetailViewController()
+        
+        navigationController?.pushViewController(controller, animated: true)
+    }
+}
