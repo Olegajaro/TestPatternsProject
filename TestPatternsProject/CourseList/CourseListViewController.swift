@@ -14,28 +14,23 @@ class CourseListViewController: UITableViewController {
     // MARK: - Properties
     
     private var activityIndicator: UIActivityIndicatorView?
-    private var courses: [Course] = []
+    private var viewModel: CourseListViewModelProtocol! {
+        didSet {
+            viewModel.fetchCourses {
+                self.tableView.reloadData()
+                self.activityIndicator?.stopAnimating()
+            }
+        }
+    }
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        viewModel = CourseListViewModel()
         setupNavigationBar()
         configureTableView()
         activityIndicator = showActivityIndicator(in: view)
-        getCourses()
-    }
-    
-    // MARK: - Actions
-    
-    private func getCourses() {
-        NetworkManager.shared.fetchData { courses in
-            self.courses = courses
-            DispatchQueue.main.async {
-                self.activityIndicator?.stopAnimating()
-                self.tableView.reloadData()
-            }
-        }
     }
     
     // MARK: - Helpers
@@ -48,8 +43,7 @@ class CourseListViewController: UITableViewController {
         let navBarAppearance = UINavigationBarAppearance()
         navBarAppearance.configureWithOpaqueBackground()
         
-        navBarAppearance.backgroundColor = UIColor(red: 21/255, green: 101/255,
-                                                   blue: 192/255, alpha: 194/255)
+        navBarAppearance.backgroundColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
         
         navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
         navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
@@ -82,7 +76,7 @@ class CourseListViewController: UITableViewController {
 
 extension CourseListViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        courses.count
+        viewModel.numberOfRows()
     }
     
     override func tableView(_ tableView: UITableView,
@@ -92,8 +86,7 @@ extension CourseListViewController {
             for: indexPath
         ) as! CourseCell
         
-        let course = courses[indexPath.row]
-        cell.configure(with: course)
+        cell.viewModel = viewModel.cellViewModel(at: indexPath)
         
         return cell
     }
@@ -103,9 +96,7 @@ extension CourseListViewController {
 
 extension CourseListViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let course = courses[indexPath.row]
-        
-        let controller = CourseDetailsViewControllers(course: course)
+        let controller = CourseDetailsViewController(viewModel.detailsViewModel(at: indexPath))
         
         navigationController?.pushViewController(controller, animated: true)
     }

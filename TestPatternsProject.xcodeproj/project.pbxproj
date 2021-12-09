@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		109D84BA276282AC009E1C47 /* CourseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109D84B9276282AC009E1C47 /* CourseListViewModel.swift */; };
+		109D84BC2762855B009E1C47 /* CourseCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109D84BB2762855B009E1C47 /* CourseCellViewModel.swift */; };
 		10A89C5E2762070600B75A50 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A89C5D2762070600B75A50 /* AppDelegate.swift */; };
 		10A89C602762070600B75A50 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A89C5F2762070600B75A50 /* SceneDelegate.swift */; };
 		10A89C622762070600B75A50 /* CourseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A89C612762070600B75A50 /* CourseListViewController.swift */; };
@@ -24,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		109D84B9276282AC009E1C47 /* CourseListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseListViewModel.swift; sourceTree = "<group>"; };
+		109D84BB2762855B009E1C47 /* CourseCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCellViewModel.swift; sourceTree = "<group>"; };
 		10A89C5A2762070600B75A50 /* TestPatternsProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestPatternsProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		10A89C5D2762070600B75A50 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		10A89C5F2762070600B75A50 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -53,6 +57,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		109D84B827628287009E1C47 /* CourseList */ = {
+			isa = PBXGroup;
+			children = (
+				10A89C612762070600B75A50 /* CourseListViewController.swift */,
+				109D84B9276282AC009E1C47 /* CourseListViewModel.swift */,
+				10A89C7527620EF400B75A50 /* Views */,
+			);
+			path = CourseList;
+			sourceTree = "<group>";
+		};
 		10A89C512762070600B75A50 = {
 			isa = PBXGroup;
 			children = (
@@ -73,8 +87,8 @@
 		10A89C5C2762070600B75A50 /* TestPatternsProject */ = {
 			isa = PBXGroup;
 			children = (
+				109D84B827628287009E1C47 /* CourseList */,
 				10A89C88276276FD00B75A50 /* CourseDetails */,
-				10A89C7527620EF400B75A50 /* Views */,
 				10A89C7427620EDD00B75A50 /* Models */,
 				10A89C7327620EC400B75A50 /* ViewControllers */,
 				10A89C7927620F8600B75A50 /* Services */,
@@ -87,7 +101,6 @@
 		10A89C7327620EC400B75A50 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				10A89C612762070600B75A50 /* CourseListViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -104,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				10A89C7C2762132600B75A50 /* CourseCell.swift */,
+				109D84BB2762855B009E1C47 /* CourseCellViewModel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -219,8 +233,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				10A89C7F2762141100B75A50 /* Course.swift in Sources */,
+				109D84BA276282AC009E1C47 /* CourseListViewModel.swift in Sources */,
 				10A89C8727624C2400B75A50 /* ImageManager.swift in Sources */,
 				10A89C7B2762119B00B75A50 /* CourseDetailsViewController.swift in Sources */,
+				109D84BC2762855B009E1C47 /* CourseCellViewModel.swift in Sources */,
 				10A89C622762070600B75A50 /* CourseListViewController.swift in Sources */,
 				10A89C812762142700B75A50 /* NetworkManager.swift in Sources */,
 				10A89C5E2762070600B75A50 /* AppDelegate.swift in Sources */,

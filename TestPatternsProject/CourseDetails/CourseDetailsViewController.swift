@@ -7,23 +7,11 @@
 
 import UIKit
 
-class CourseDetailsViewControllers: UIViewController {
+class CourseDetailsViewController: UIViewController {
     
     // MARK: - Properties
     
-    var course: Course!
-    var viewModel: CourseDetailsViewModelProtocol! {
-        didSet {
-            viewModel.viewModelDidChange = { [weak self] viewModel in
-                self?.setStatusForFavoriteButton(viewModel.isFavorite)
-            }
-            courseNameLabel.text = viewModel.courseName
-            numberOfLessons.text = viewModel.numberOfLessons
-            numberOfTests.text = viewModel.numberOfTests
-            guard let imageData = viewModel.imageData else { return }
-            courseImage.image = UIImage(data: imageData)
-        }
-    }
+    var viewModel: CourseDetailsViewModelProtocol!
     
     private var courseNameLabel: UILabel =  {
         let label = UILabel()
@@ -60,12 +48,12 @@ class CourseDetailsViewControllers: UIViewController {
     
     
     // MARK: - Lifecycle
-    
-    init(course: Course) {
-        self.course = course
+
+    init(_ viewModel: CourseDetailsViewModelProtocol) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -73,7 +61,6 @@ class CourseDetailsViewControllers: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel = CourseDetailsViewModel(course: course)
         setupUI()
     }
     
@@ -118,6 +105,18 @@ class CourseDetailsViewControllers: UIViewController {
                      right: view.rightAnchor, paddingTop: 20,
                      paddingLeft: 30, paddingRight: 30)
         
+        configure()
+    }
+    
+    private func configure() {
         setStatusForFavoriteButton(viewModel.isFavorite)
+        viewModel.viewModelDidChange = { [weak self] viewModel in
+            self?.setStatusForFavoriteButton(viewModel.isFavorite)
+        }
+        courseNameLabel.text = viewModel.courseName
+        numberOfLessons.text = viewModel.numberOfLessons
+        numberOfTests.text = viewModel.numberOfTests
+        guard let imageData = viewModel.imageData else { return }
+        courseImage.image = UIImage(data: imageData)
     }
 }

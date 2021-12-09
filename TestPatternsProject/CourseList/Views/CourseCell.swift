@@ -11,6 +11,14 @@ class CourseCell: UITableViewCell {
     
     // MARK: - Properties
     
+    var viewModel: CourseCellViewModelProtocol! {
+        didSet {
+            courseName.text = viewModel.courseName
+            guard let imageData = viewModel.imageData else { return }
+            courseImage.image = UIImage(data: imageData)
+        }
+    }
+    
     private let courseImage: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
@@ -44,16 +52,5 @@ class CourseCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Helpers
-    
-    func configure(with course: Course) {
-        guard
-            let imageData = ImageManager.shared.fetchImageData(from: course.imageURL)
-        else { return }
-        
-        courseImage.image = UIImage(data: imageData)
-        courseName.text = course.name
     }
 }
