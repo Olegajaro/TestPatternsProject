@@ -11,11 +11,14 @@ class CourseDetailViewController: UIViewController {
     
     // MARK: - Properties
     
+    var course: Course!
+    
+    private var isFavorite = false
+    
     private var courseNameLabel: UILabel =  {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 25, weight: .medium)
         label.numberOfLines = 0
-        label.text = "Course Name"
         return label
     }()
     
@@ -23,21 +26,18 @@ class CourseDetailViewController: UIViewController {
         let iv = UIImageView()
         iv.contentMode = .scaleToFill
         iv.backgroundColor = .systemGray
-        iv.image = UIImage(systemName: "person.fill")!
         return iv
     }()
     
     private var numberOfLessons: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.text = "Number of lessons: 0"
         return label
     }()
     
     private var numberOfTests: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
-        label.text = "Number of tests: 0"
         return label
     }()
     
@@ -48,13 +48,22 @@ class CourseDetailViewController: UIViewController {
         return button
     }()
     
-    private var isFavorite = false
     
     // MARK: - Lifecycle
+    
+    init(course: Course) {
+        self.course = course
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        loadFavoriteStatus()
         setupUI()
     }
     
@@ -63,10 +72,15 @@ class CourseDetailViewController: UIViewController {
     @objc private func handleFavoriteTap() {
         isFavorite.toggle()
         setStatusForFavoriteButton()
+        StorageManager.shared.setFavoritesStatus(for: course?.name ?? "", with: isFavorite)
     }
     
     private func setStatusForFavoriteButton() {
         favoriteButton.tintColor = isFavorite ? .red : .gray
+    }
+    
+    private func loadFavoriteStatus() {
+        isFavorite = StorageManager.shared.getFavoriteStatus(for: course.name)
     }
     
     // MARK: - Helpers
@@ -99,6 +113,18 @@ class CourseDetailViewController: UIViewController {
         stack.anchor(top: courseImage.bottomAnchor, left: view.leftAnchor,
                      right: view.rightAnchor, paddingTop: 20,
                      paddingLeft: 30, paddingRight: 30)
+        
+        configure()
+    }
+    
+    private func configure() {
+        courseNameLabel.text = course.name
+        numberOfLessons.text = "Number of lessons: \(course.numberOfLessons)"
+        numberOfTests.text = "Number of tests: \(course.numberOfTests)"
+        
+        if let imageData = ImageManager.shared.fetchImageData(from: course.imageURL) {
+            courseImage.image = UIImage(data: imageData)
+        }
         
         setStatusForFavoriteButton()
     }

@@ -11,7 +11,7 @@ struct Course: Codable {
     let id: Int
     let name: String
     let link: String
-    let imageURL: String
+    let imageURL: URL
     let numberOfLessons, numberOfTests: Int
 
     enum CodingKeys: String, CodingKey {

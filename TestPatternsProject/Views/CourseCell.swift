@@ -23,7 +23,7 @@ class CourseCell: UITableViewCell {
     private let courseName: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        label.textColor = .black
+        label.numberOfLines = 2
         label.text = "Course name"
         return label
     }()
@@ -39,6 +39,7 @@ class CourseCell: UITableViewCell {
         
         addSubview(courseName)
         courseName.centerY(inView: self, leftAnchor: courseImage.rightAnchor, paddingLeft: 10)
+        courseName.anchor(right: self.rightAnchor, paddingRight: 10)
     }
     
     required init?(coder: NSCoder) {
@@ -46,4 +47,13 @@ class CourseCell: UITableViewCell {
     }
     
     // MARK: - Helpers
+    
+    func configure(with course: Course) {
+        guard
+            let imageData = ImageManager.shared.fetchImageData(from: course.imageURL)
+        else { return }
+        
+        courseImage.image = UIImage(data: imageData)
+        courseName.text = course.name
+    }
 }

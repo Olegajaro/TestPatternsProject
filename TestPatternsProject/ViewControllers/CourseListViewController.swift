@@ -23,9 +23,20 @@ class CourseListViewController: UITableViewController {
         setupNavigationBar()
         configureTableView()
         activityIndicator = showActivityIndicator(in: view)
+        getCourses()
     }
     
     // MARK: - Actions
+    
+    private func getCourses() {
+        NetworkManager.shared.fetchData { courses in
+            self.courses = courses
+            DispatchQueue.main.async {
+                self.activityIndicator?.stopAnimating()
+                self.tableView.reloadData()
+            }
+        }
+    }
     
     // MARK: - Helpers
     
@@ -71,15 +82,18 @@ class CourseListViewController: UITableViewController {
 
 extension CourseListViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        4
+        courses.count
     }
     
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier,
-                                                 for: indexPath) as! CourseCell
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: reuseIdentifier,
+            for: indexPath
+        ) as! CourseCell
         
-        cell.backgroundColor = .systemGray
+        let course = courses[indexPath.row]
+        cell.configure(with: course)
         
         return cell
     }
@@ -89,7 +103,9 @@ extension CourseListViewController {
 
 extension CourseListViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let controller = CourseDetailViewController()
+        let course = courses[indexPath.row]
+        
+        let controller = CourseDetailViewController(course: course)
         
         navigationController?.pushViewController(controller, animated: true)
     }
