@@ -96,7 +96,9 @@ extension CourseListViewController {
 
 extension CourseListViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let controller = CourseDetailsViewController(viewModel.detailsViewModel(at: indexPath))
+        
+        let courseDetails = viewModel.detailsViewModel(at: indexPath)
+        let controller = CourseDetailsViewController(courseDetails)
         
         navigationController?.pushViewController(controller, animated: true)
     }
