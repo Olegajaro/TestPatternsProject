@@ -42,6 +42,8 @@ class CourseDetailsViewController: UIViewController {
     private var favoriteButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 30),
+                                               forImageIn: .normal)
         button.addTarget(self, action: #selector(handleFavoriteTap), for: .touchUpInside)
         return button
     }()
