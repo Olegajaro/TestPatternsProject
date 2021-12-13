@@ -111,9 +111,9 @@ class CourseDetailsViewController: UIViewController {
     }
     
     private func configure() {
-        setStatusForFavoriteButton(viewModel.isFavorite)
-        viewModel.viewModelDidChange = { [weak self] viewModel in
-            self?.setStatusForFavoriteButton(viewModel.isFavorite)
+        setStatusForFavoriteButton(viewModel.isFavorite.value)
+        viewModel.isFavorite.bind { [weak self] value in
+            self?.setStatusForFavoriteButton(value)
         }
         courseNameLabel.text = viewModel.courseName
         numberOfLessons.text = viewModel.numberOfLessons

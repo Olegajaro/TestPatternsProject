@@ -23,6 +23,7 @@
 		10A89C852762368200B75A50 /* extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A89C842762368200B75A50 /* extensions.swift */; };
 		10A89C8727624C2400B75A50 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A89C8627624C2400B75A50 /* ImageManager.swift */; };
 		10A89C8A2762774000B75A50 /* CourseDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10A89C892762774000B75A50 /* CourseDetailsViewModel.swift */; };
+		10DD1A5F2767B53F005A6D89 /* Box.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10DD1A5E2767B53F005A6D89 /* Box.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		10A89C842762368200B75A50 /* extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = extensions.swift; sourceTree = "<group>"; };
 		10A89C8627624C2400B75A50 /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
 		10A89C892762774000B75A50 /* CourseDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDetailsViewModel.swift; sourceTree = "<group>"; };
+		10DD1A5E2767B53F005A6D89 /* Box.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Box.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,11 +89,10 @@
 		10A89C5C2762070600B75A50 /* TestPatternsProject */ = {
 			isa = PBXGroup;
 			children = (
-				109D84B827628287009E1C47 /* CourseList */,
-				10A89C88276276FD00B75A50 /* CourseDetails */,
 				10A89C7427620EDD00B75A50 /* Models */,
 				10A89C7327620EC400B75A50 /* ViewControllers */,
 				10A89C7927620F8600B75A50 /* Services */,
+				10DD1A5D2767B527005A6D89 /* Helpers */,
 				10A89C7827620F4600B75A50 /* Resources */,
 				10A89C7727620F0A00B75A50 /* Supporting Files */,
 			);
@@ -101,6 +102,8 @@
 		10A89C7327620EC400B75A50 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				109D84B827628287009E1C47 /* CourseList */,
+				10A89C88276276FD00B75A50 /* CourseDetails */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -147,7 +150,6 @@
 				10A89C802762142700B75A50 /* NetworkManager.swift */,
 				10A89C8627624C2400B75A50 /* ImageManager.swift */,
 				10A89C822762142E00B75A50 /* StorageManager.swift */,
-				10A89C842762368200B75A50 /* extensions.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -159,6 +161,15 @@
 				10A89C892762774000B75A50 /* CourseDetailsViewModel.swift */,
 			);
 			path = CourseDetails;
+			sourceTree = "<group>";
+		};
+		10DD1A5D2767B527005A6D89 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				10DD1A5E2767B53F005A6D89 /* Box.swift */,
+				10A89C842762368200B75A50 /* extensions.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,6 +244,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				10A89C7F2762141100B75A50 /* Course.swift in Sources */,
+				10DD1A5F2767B53F005A6D89 /* Box.swift in Sources */,
 				109D84BA276282AC009E1C47 /* CourseListViewModel.swift in Sources */,
 				10A89C8727624C2400B75A50 /* ImageManager.swift in Sources */,
 				10A89C7B2762119B00B75A50 /* CourseDetailsViewController.swift in Sources */,
