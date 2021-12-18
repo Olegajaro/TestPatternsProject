@@ -1,5 +1,5 @@
 //
-//  CourseDetailViewController.swift
+//  CourseDetailsViewController.swift
 //  TestPatternsProject
 //
 //  Created by Олег Федоров on 09.12.2021.
@@ -7,11 +7,22 @@
 
 import UIKit
 
-class CourseDetailViewController: UIViewController {
+protocol CourseDetailsViewInputProtocol: AnyObject {
+    
+}
+
+protocol CourseDetailsViewOutputProtocol: AnyObject {
+    init(view: CourseDetailsViewInputProtocol)
+    func showDetails()
+}
+
+class CourseDetailsViewController: UIViewController {
     
     // MARK: - Properties
     
     var course: Course!
+    var presenter: CourseDetailsViewOutputProtocol!
+    let configurator: CourseDetailsConfiguratorInputProtocol = CourseDetailsConfigurator()
     
     private var isFavorite = false
     
@@ -44,7 +55,13 @@ class CourseDetailViewController: UIViewController {
     private var favoriteButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        button.addTarget(self, action: #selector(handleFavoriteTap), for: .touchUpInside)
+        button.addTarget(self,
+                         action: #selector(handleFavoriteTap),
+                         for: .touchUpInside)
+        button.setPreferredSymbolConfiguration(
+            UIImage.SymbolConfiguration(pointSize: 30),
+            forImageIn: .normal
+        )
         return button
     }()
     
@@ -63,6 +80,8 @@ class CourseDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configurator.configure(with: self, and: course)
+        presenter.showDetails()
         loadFavoriteStatus()
         setupUI()
     }
@@ -128,4 +147,10 @@ class CourseDetailViewController: UIViewController {
         
         setStatusForFavoriteButton()
     }
+}
+
+// MARK: - CourseDetailsViewInputProtocol
+
+extension CourseDetailsViewController: CourseDetailsViewInputProtocol {
+    
 }
