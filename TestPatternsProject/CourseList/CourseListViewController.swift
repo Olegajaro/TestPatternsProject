@@ -7,6 +7,15 @@
 
 import UIKit
 
+protocol CourseListViewControllerInputProtocol: AnyObject {
+    func displayCourses(courses: [Course])
+}
+
+protocol CourseListViewControllerOutputProtocol: AnyObject {
+    init(view: CourseListViewControllerInputProtocol)
+    func viewDidLoad()
+}
+
 private let reuseIdentifier = "CourseCell"
 
 class CourseListViewController: UITableViewController {
@@ -16,27 +25,21 @@ class CourseListViewController: UITableViewController {
     private var activityIndicator: UIActivityIndicatorView?
     private var courses: [Course] = []
     
+    var presenter: CourseListViewControllerOutputProtocol!
+    var configurator: CourseListConfiguratorInputProtocol = CourseListConfigurator()
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        configurator.configure(with: self)
+        presenter.viewDidLoad()
         setupNavigationBar()
         configureTableView()
         activityIndicator = showActivityIndicator(in: view)
-        getCourses()
     }
     
     // MARK: - Actions
-    
-    private func getCourses() {
-        NetworkManager.shared.fetchData { courses in
-            self.courses = courses
-            DispatchQueue.main.async {
-                self.activityIndicator?.stopAnimating()
-                self.tableView.reloadData()
-            }
-        }
-    }
     
     // MARK: - Helpers
     
@@ -81,7 +84,8 @@ class CourseListViewController: UITableViewController {
 // MARK: - UITableViewDataSource
 
 extension CourseListViewController {
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView,
+                            numberOfRowsInSection section: Int) -> Int {
         courses.count
     }
     
@@ -102,11 +106,22 @@ extension CourseListViewController {
 // MARK: - UITableViewDelegate
 
 extension CourseListViewController {
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView,
+                            didSelectRowAt indexPath: IndexPath) {
         let course = courses[indexPath.row]
         
         let controller = CourseDetailsViewController(course: course)
         
         navigationController?.pushViewController(controller, animated: true)
+    }
+}
+
+// MARK: - CourseListViewControllerInputProtocol
+
+extension CourseListViewController: CourseListViewControllerInputProtocol {
+    func displayCourses(courses: [Course]) {
+        self.courses = courses
+        activityIndicator?.stopAnimating()
+        tableView.reloadData()
     }
 }

@@ -8,12 +8,17 @@
 import UIKit
 
 protocol CourseDetailsViewInputProtocol: AnyObject {
-    
+    func displayCourseName(with title: String)
+    func displayNumberOfLessons(with title: String)
+    func displayNumberOfTests(with title: String)
+    func displayCourseImage(with data: Data)
+    func displayImageForFavoriteButton(with state: Bool)
 }
 
 protocol CourseDetailsViewOutputProtocol: AnyObject {
     init(view: CourseDetailsViewInputProtocol)
     func showDetails()
+    func favoriteButtonPressed()
 }
 
 class CourseDetailsViewController: UIViewController {
@@ -24,7 +29,7 @@ class CourseDetailsViewController: UIViewController {
     var presenter: CourseDetailsViewOutputProtocol!
     let configurator: CourseDetailsConfiguratorInputProtocol = CourseDetailsConfigurator()
     
-    private var isFavorite = false
+//    private var isFavorite = false
     
     private var courseNameLabel: UILabel =  {
         let label = UILabel()
@@ -82,24 +87,13 @@ class CourseDetailsViewController: UIViewController {
         
         configurator.configure(with: self, and: course)
         presenter.showDetails()
-        loadFavoriteStatus()
         setupUI()
     }
     
     // MARK: - Actions
     
     @objc private func handleFavoriteTap() {
-        isFavorite.toggle()
-        setStatusForFavoriteButton()
-        StorageManager.shared.setFavoritesStatus(for: course?.name ?? "", with: isFavorite)
-    }
-    
-    private func setStatusForFavoriteButton() {
-        favoriteButton.tintColor = isFavorite ? .red : .gray
-    }
-    
-    private func loadFavoriteStatus() {
-        isFavorite = StorageManager.shared.getFavoriteStatus(for: course.name)
+        presenter.favoriteButtonPressed()
     }
     
     // MARK: - Helpers
@@ -108,9 +102,10 @@ class CourseDetailsViewController: UIViewController {
         view.backgroundColor = .white
         
         view.addSubview(courseNameLabel)
-        courseNameLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor, left: view.leftAnchor,
-                               right: view.rightAnchor, paddingTop: 100,
-                               paddingLeft: 30, paddingRight: 30)
+        courseNameLabel.anchor(top: view.safeAreaLayoutGuide.topAnchor,
+                               left: view.leftAnchor, right: view.rightAnchor,
+                               paddingTop: 100, paddingLeft: 30,
+                               paddingRight: 30)
         courseNameLabel.textAlignment = .center
         
         view.addSubview(courseImage)
@@ -120,10 +115,12 @@ class CourseDetailsViewController: UIViewController {
         
         view.addSubview(favoriteButton)
         favoriteButton.setDimensions(height: 50, width: 50)
-        favoriteButton.anchor(bottom: courseImage.bottomAnchor, right: courseImage.rightAnchor,
+        favoriteButton.anchor(bottom: courseImage.bottomAnchor,
+                              right: courseImage.rightAnchor,
                               paddingBottom: 0, paddingRight: 0)
         
-        let stack = UIStackView(arrangedSubviews: [numberOfLessons, numberOfTests])
+        let stack = UIStackView(arrangedSubviews: [numberOfLessons,
+                                                   numberOfTests])
         stack.axis = .vertical
         stack.spacing = 10
         stack.alignment = .leading
@@ -132,25 +129,29 @@ class CourseDetailsViewController: UIViewController {
         stack.anchor(top: courseImage.bottomAnchor, left: view.leftAnchor,
                      right: view.rightAnchor, paddingTop: 20,
                      paddingLeft: 30, paddingRight: 30)
-        
-        configure()
-    }
-    
-    private func configure() {
-        courseNameLabel.text = course.name
-        numberOfLessons.text = "Number of lessons: \(course.numberOfLessons)"
-        numberOfTests.text = "Number of tests: \(course.numberOfTests)"
-        
-        if let imageData = ImageManager.shared.fetchImageData(from: course.imageURL) {
-            courseImage.image = UIImage(data: imageData)
-        }
-        
-        setStatusForFavoriteButton()
     }
 }
 
 // MARK: - CourseDetailsViewInputProtocol
 
 extension CourseDetailsViewController: CourseDetailsViewInputProtocol {
+    func displayCourseName(with title: String) {
+        courseNameLabel.text = title
+    }
     
+    func displayNumberOfLessons(with title: String) {
+        numberOfLessons.text = title
+    }
+    
+    func displayNumberOfTests(with title: String) {
+        numberOfTests.text = title
+    }
+    
+    func displayCourseImage(with data: Data) {
+        courseImage.image = UIImage(data: data)
+    }
+    
+    func displayImageForFavoriteButton(with state: Bool) {
+        favoriteButton.tintColor = state ? .red : .gray
+    }
 }
