@@ -20,6 +20,10 @@ class CourseListRouter: CourseListRouterInputProtocol {
     }
     
     func openCourseDetailsViewController(with course: Course) {
+        let controller = CourseDetailsViewController()
+        controller.configurator.configure(with: controller, and: course)
         
+        viewController.navigationController?.pushViewController(controller,
+                                                                animated: true)
     }
 }

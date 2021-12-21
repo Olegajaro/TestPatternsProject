@@ -25,11 +25,8 @@ class CourseDetailsViewController: UIViewController {
     
     // MARK: - Properties
     
-    var course: Course!
     var presenter: CourseDetailsViewOutputProtocol!
     let configurator: CourseDetailsConfiguratorInputProtocol = CourseDetailsConfigurator()
-    
-//    private var isFavorite = false
     
     private var courseNameLabel: UILabel =  {
         let label = UILabel()
@@ -73,19 +70,9 @@ class CourseDetailsViewController: UIViewController {
     
     // MARK: - Lifecycle
     
-    init(course: Course) {
-        self.course = course
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configurator.configure(with: self, and: course)
         presenter.showDetails()
         setupUI()
     }

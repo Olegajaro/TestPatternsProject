@@ -7,9 +7,19 @@
 
 import UIKit
 
-class CourseCell: UITableViewCell {
+protocol CellViewModelRepresentable {
+    var viewModel: CourseCellViewModelProtocol? { get }
+}
+
+class CourseCell: UITableViewCell, CellViewModelRepresentable {
     
     // MARK: - Properties
+    
+    var viewModel: CourseCellViewModelProtocol? {
+        didSet {
+            updateView()
+        }
+    }
     
     private let courseImage: UIImageView = {
         let iv = UIImageView()
@@ -29,16 +39,20 @@ class CourseCell: UITableViewCell {
     }()
     
     // MARK: - Lifecycle
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         addSubview(courseImage)
         courseImage.setDimensions(height: 100, width: 150)
-        courseImage.centerY(inView: self, leftAnchor: leftAnchor, paddingLeft: 0)
+        courseImage.centerY(inView: self,
+                            leftAnchor: leftAnchor,
+                            paddingLeft: 0)
         
         addSubview(courseName)
-        courseName.centerY(inView: self, leftAnchor: courseImage.rightAnchor, paddingLeft: 10)
+        courseName.centerY(inView: self,
+                           leftAnchor: courseImage.rightAnchor,
+                           paddingLeft: 10)
         courseName.anchor(right: self.rightAnchor, paddingRight: 10)
     }
     
@@ -48,12 +62,13 @@ class CourseCell: UITableViewCell {
     
     // MARK: - Helpers
     
-    func configure(with course: Course) {
+    private func updateView() {
         guard
-            let imageData = ImageManager.shared.fetchImageData(from: course.imageURL)
+            let viewModel = viewModel as? CourseCellViewModel,
+            let imageData = viewModel.imageData
         else { return }
         
         courseImage.image = UIImage(data: imageData)
-        courseName.text = course.name
+        courseName.text = viewModel.courseName
     }
 }

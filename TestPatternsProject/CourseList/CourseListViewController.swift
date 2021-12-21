@@ -8,12 +8,13 @@
 import UIKit
 
 protocol CourseListViewControllerInputProtocol: AnyObject {
-    func displayCourses(courses: [Course])
+    func reloadData(for section: CourseSectionViewModel)
 }
 
 protocol CourseListViewControllerOutputProtocol: AnyObject {
     init(view: CourseListViewControllerInputProtocol)
     func viewDidLoad()
+    func didTapCell(at indexPath: IndexPath)
 }
 
 private let reuseIdentifier = "CourseCell"
@@ -23,7 +24,7 @@ class CourseListViewController: UITableViewController {
     // MARK: - Properties
     
     private var activityIndicator: UIActivityIndicatorView?
-    private var courses: [Course] = []
+    private var sectionViewModel: CourseSectionViewModelProtocol = CourseSectionViewModel()
     
     var presenter: CourseListViewControllerOutputProtocol!
     var configurator: CourseListConfiguratorInputProtocol = CourseListConfigurator()
@@ -38,8 +39,6 @@ class CourseListViewController: UITableViewController {
         configureTableView()
         activityIndicator = showActivityIndicator(in: view)
     }
-    
-    // MARK: - Actions
     
     // MARK: - Helpers
     
@@ -62,8 +61,8 @@ class CourseListViewController: UITableViewController {
     }
     
     private func configureTableView() {
-        tableView.register(CourseCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tableView.rowHeight = 100
+        tableView.register(CourseCell.self,
+                           forCellReuseIdentifier: reuseIdentifier)
     }
     
     private func showActivityIndicator(in view: UIView) -> UIActivityIndicatorView {
@@ -86,18 +85,19 @@ class CourseListViewController: UITableViewController {
 extension CourseListViewController {
     override func tableView(_ tableView: UITableView,
                             numberOfRowsInSection section: Int) -> Int {
-        courses.count
+        sectionViewModel.rows.count
     }
     
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cellViewModel = sectionViewModel.rows[indexPath.row]
+        
         let cell = tableView.dequeueReusableCell(
             withIdentifier: reuseIdentifier,
             for: indexPath
         ) as! CourseCell
         
-        let course = courses[indexPath.row]
-        cell.configure(with: course)
+        cell.viewModel = cellViewModel
         
         return cell
     }
@@ -108,19 +108,21 @@ extension CourseListViewController {
 extension CourseListViewController {
     override func tableView(_ tableView: UITableView,
                             didSelectRowAt indexPath: IndexPath) {
-        let course = courses[indexPath.row]
-        
-        let controller = CourseDetailsViewController(course: course)
-        
-        navigationController?.pushViewController(controller, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
+        presenter.didTapCell(at: indexPath)
+    }
+    
+    override func tableView(_ tableView: UITableView,
+                            heightForRowAt indexPath: IndexPath) -> CGFloat {
+        CGFloat(sectionViewModel.rows[indexPath.row].cellHeight)
     }
 }
 
 // MARK: - CourseListViewControllerInputProtocol
 
 extension CourseListViewController: CourseListViewControllerInputProtocol {
-    func displayCourses(courses: [Course]) {
-        self.courses = courses
+    func reloadData(for section: CourseSectionViewModel) {
+        sectionViewModel = section
         activityIndicator?.stopAnimating()
         tableView.reloadData()
     }
