@@ -15,7 +15,7 @@ class StorageManager {
     
     private init() {}
     
-    func setFavoritesStatus(for courseName: String, with status: Bool) {
+    func setFavoriteStatus(for courseName: String, with status: Bool) {
         userDefaults.set(status, forKey: courseName)
     }
     

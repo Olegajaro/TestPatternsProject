@@ -27,7 +27,7 @@ class CourseDetailsInteractor: CourseDetailsInteractorInputProtocol {
         get {
             StorageManager.shared.getFavoriteStatus(for: course.name)
         } set {
-            StorageManager.shared.setFavoritesStatus(for: course.name,
+            StorageManager.shared.setFavoriteStatus(for: course.name,
                                                         with: newValue)
         }
     }
