@@ -87,7 +87,6 @@
 				107085972772002A00A334DB /* CourseListInteractor.swift */,
 				1070859B2772004B00A334DB /* CourseListRouter.swift */,
 				107085992772003E00A334DB /* CourseListConfigurator.swift */,
-				1006856B276E1D9000B9ED5B /* CourseDetails */,
 			);
 			path = CourseList;
 			sourceTree = "<group>";
@@ -122,6 +121,7 @@
 			isa = PBXGroup;
 			children = (
 				107085942772000200A334DB /* CourseList */,
+				1006856B276E1D9000B9ED5B /* CourseDetails */,
 				10A89C7427620EDD00B75A50 /* Models */,
 				10A89C7927620F8600B75A50 /* Services */,
 				10A89C7827620F4600B75A50 /* Resources */,

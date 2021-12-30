@@ -23,11 +23,11 @@ class CourseListViewController: UITableViewController {
 
     // MARK: - Properties
     
-    private var activityIndicator: UIActivityIndicatorView?
-    private var sectionViewModel: CourseSectionViewModelProtocol = CourseSectionViewModel()
-    
     var presenter: CourseListViewControllerOutputProtocol!
     var configurator: CourseListConfiguratorInputProtocol = CourseListConfigurator()
+    
+    private var activityIndicator: UIActivityIndicatorView?
+    private var sectionViewModel: CourseSectionViewModelProtocol = CourseSectionViewModel()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
