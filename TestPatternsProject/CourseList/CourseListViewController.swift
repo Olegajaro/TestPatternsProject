@@ -15,7 +15,7 @@ import UIKit
 private let reuseIdentifier = "CourseCell"
 
 protocol CourseListDisplayLogic: AnyObject {
-    func displayCourses(viewModel: CourseList.Something.ViewModel)
+    func displayCourses(viewModel: CourseListViewModel)
 }
 
 class CourseListViewController: UITableViewController {
@@ -26,25 +26,13 @@ class CourseListViewController: UITableViewController {
     var router: (NSObjectProtocol & CourseListRoutingLogic & CourseListDataPassing)?
     
     private var activityIndicator: UIActivityIndicatorView?
-    private var courses: [Course] = []
-    
-//    // MARK: - Object lifecycle
-//    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-//        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-//        setup()
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//        setup()
-//    }
+    private var rows: [CourseCellViewModel] = []
     
     // MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
         CourseListConfigurator.shared.configure(with: self)
-        doSomething()
         setupNavigationBar()
         configureTableView()
         activityIndicator = showActivityIndicator(in: view)
@@ -54,16 +42,11 @@ class CourseListViewController: UITableViewController {
     // MARK: - Actions
     
     private func getCourses() {
-        NetworkManager.shared.fetchData { courses in
-            self.courses = courses
-            DispatchQueue.main.async {
-                self.activityIndicator?.stopAnimating()
-                self.tableView.reloadData()
-            }
-        }
+        interactor?.fetchCourses()
     }
     
     // MARK: - Routing
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let scene = segue.identifier {
             let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
@@ -71,11 +54,6 @@ class CourseListViewController: UITableViewController {
                 router.perform(selector, with: segue)
             }
         }
-    }
-        
-    private func doSomething() {
-        let request = CourseList.Something.Request()
-        interactor?.doSomething(request: request)
     }
     
     // MARK: - Helpers
@@ -100,7 +78,6 @@ class CourseListViewController: UITableViewController {
     
     private func configureTableView() {
         tableView.register(CourseCell.self, forCellReuseIdentifier: reuseIdentifier)
-        tableView.rowHeight = 100
     }
     
     private func showActivityIndicator(in view: UIView) -> UIActivityIndicatorView {
@@ -122,18 +99,19 @@ class CourseListViewController: UITableViewController {
 
 extension CourseListViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        courses.count
+        rows.count
     }
     
     override func tableView(_ tableView: UITableView,
                             cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let viewModelCell = rows[indexPath.row]
+        
         let cell = tableView.dequeueReusableCell(
             withIdentifier: reuseIdentifier,
             for: indexPath
         ) as! CourseCell
         
-        let course = courses[indexPath.row]
-        cell.configure(with: course)
+        cell.viewModel = viewModelCell
         
         return cell
     }
@@ -143,18 +121,27 @@ extension CourseListViewController {
 
 extension CourseListViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let course = courses[indexPath.row]
-        
-        let controller = CourseDetailsViewController()
-        controller.course = course
-        
-        navigationController?.pushViewController(controller, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true )
+        router?.routeToCourseDetails()
+//        print(router?.dataStore?.courses[indexPath.row].name ?? "123")
+//        let controller = CourseDetailsViewController()
+//        controller.course = course
+//
+//        navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        CGFloat(rows[indexPath.row].height)
     }
 }
 
 
 extension CourseListViewController: CourseListDisplayLogic {
-    func displayCourses(viewModel: CourseList.Something.ViewModel) {
-        
+    func displayCourses(viewModel: CourseListViewModel) {
+        rows = viewModel.rows
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            self.activityIndicator?.stopAnimating()
+        }
     }
 }

@@ -12,12 +12,12 @@
 
 protocol CourseDetailsBusinessLogic {
     var isFavorite: Bool { get}
-    func provideCourseDetails(request: CourseDetailsRequest)
+    func provideCourseDetails()
     func setFavoriteStatus()
 }
 
 protocol CourseDetailsDataStore {
-    var course: Course? { get }
+    var course: Course? { get set }
 }
 
 class CourseDetailsInteractor: CourseDetailsBusinessLogic, CourseDetailsDataStore {
@@ -28,8 +28,7 @@ class CourseDetailsInteractor: CourseDetailsBusinessLogic, CourseDetailsDataStor
     var course: Course?
     var isFavorite: Bool = false
     
-    func provideCourseDetails(request: CourseDetailsRequest) {
-        course = request.course // delete after
+    func provideCourseDetails() {
         worker = CourseDetailsWorker()
         
         let imageData = worker?.getImage(from: course?.imageURL)
@@ -43,6 +42,7 @@ class CourseDetailsInteractor: CourseDetailsBusinessLogic, CourseDetailsDataStor
             isFavorite: isFavorite
         )
         presenter?.presentCourseDetails(response: response)
+        print(course?.name ?? "322")
     }
     
     func setFavoriteStatus() {

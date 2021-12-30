@@ -7,9 +7,19 @@
 
 import UIKit
 
-class CourseCell: UITableViewCell {
+protocol CellModelRepresentable {
+    var viewModel: CourseCellViewModelProtocol? { get }
+}
+
+class CourseCell: UITableViewCell, CellModelRepresentable {
     
     // MARK: - Properties
+    
+    var viewModel: CourseCellViewModelProtocol? {
+        didSet {
+            updateView()
+        }
+    }
     
     private let courseImage: UIImageView = {
         let iv = UIImageView()
@@ -48,12 +58,20 @@ class CourseCell: UITableViewCell {
     
     // MARK: - Helpers
     
-    func configure(with course: Course) {
-        guard
-            let imageData = ImageManager.shared.fetchImageData(from: course.imageURL)
-        else { return }
+//    func configure(with course: Course) {
+//        guard
+//            let imageData = ImageManager.shared.fetchImageData(from: course.imageURL)
+//        else { return }
+//        
+//        courseImage.image = UIImage(data: imageData)
+//        courseName.text = course.name
+//    }
+    
+    private func updateView() {
+        guard let viewModel = viewModel as? CourseCellViewModel else { return }
+        guard let imageData = viewModel.imageData else { return }
         
+        courseName.text = viewModel.courseName
         courseImage.image = UIImage(data: imageData)
-        courseName.text = course.name
     }
 }

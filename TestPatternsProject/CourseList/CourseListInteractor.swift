@@ -10,21 +10,28 @@
 //  see http://clean-swift.com
 //
 
+import Foundation
+
 protocol CourseListBusinessLogic {
-    func doSomething(request: CourseList.Something.Request)
+    func fetchCourses()
 }
 
 protocol CourseListDataStore {
-    
+    var courses: [Course] { get }
 }
 
 class CourseListInteractor: CourseListBusinessLogic, CourseListDataStore {
     
     var presenter: CourseListPresentationLogic?
+    var courses: [Course] = []
     
-    func doSomething(request: CourseList.Something.Request) {
-        
-        let response = CourseList.Something.Response()
-        presenter?.presentSomething(response: response)
+    func fetchCourses() {
+        NetworkManager.shared.fetchData { [weak self] courses in
+            guard let self = self else { return }
+            
+            self.courses = courses
+            let response = CourseListResponse(courses: courses)
+            self.presenter?.presentCourses(response: response)
+        }
     }
 }

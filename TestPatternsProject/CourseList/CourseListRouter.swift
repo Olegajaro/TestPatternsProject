@@ -12,10 +12,12 @@
 
 import UIKit
 
+// логика перехода
 @objc protocol CourseListRoutingLogic {
-    //func routeToSomewhere(segue: UIStoryboardSegue?)
+    func routeToCourseDetails()
 }
 
+// протокол определяет свойства, которые необходимо передать с одной сцены на другую
 protocol CourseListDataPassing {
     var dataStore: CourseListDataStore? { get }
 }
@@ -26,6 +28,17 @@ class CourseListRouter: NSObject, CourseListRoutingLogic, CourseListDataPassing 
     var dataStore: CourseListDataStore?
     
     // MARK: Routing
+    
+    func routeToCourseDetails() {
+        guard let viewController = viewController else { return }
+        let destinationVC = CourseDetailsViewController()
+        var destinationDS = destinationVC.router!.dataStore!
+        guard let dataStore = dataStore else { return }
+
+        passDataToCourseDetails(source: dataStore, destination: &destinationDS)
+        print(destinationDS.course?.name ?? "322")
+        navigateToCourseDetails(source: viewController, destination: destinationVC)
+    }
     /*
     func routeToSomewhere(segue: UIStoryboardSegue?) {
         if let segue = segue {
@@ -43,16 +56,14 @@ class CourseListRouter: NSObject, CourseListRoutingLogic, CourseListDataPassing 
     */
     
     // MARK: Navigation
-    /*
-    func navigateToSomewhere(source: CourseListViewController, destination: SomewhereViewController) {
-        source.show(destination, sender: nil)
+    func navigateToCourseDetails(source: CourseListViewController, destination: CourseDetailsViewController) {
+        source.navigationController?.pushViewController(destination, animated: true)
     }
-    */
     
     // MARK: Passing data
-    /*
-    func passDataToSomewhere(source: CourseListDataStore, destination: inout SomewhereDataStore) {
-        destination.name = source.name
+    func passDataToCourseDetails(source: CourseListDataStore, destination: inout CourseDetailsDataStore) {
+        guard let indexPath = viewController?.tableView.indexPathForSelectedRow else { return }
+        destination.course = source.courses[indexPath.row]
     }
-    */
+    
 }

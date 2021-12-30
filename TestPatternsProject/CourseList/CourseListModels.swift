@@ -10,20 +10,50 @@
 //  see http://clean-swift.com
 //
 
+import Foundation
+
+
+typealias CourseListResponse = CourseList.ShowCourses.Response
+typealias CourseListViewModel = CourseList.ShowCourses.ViewModel
+typealias CourseCellViewModel = CourseList.ShowCourses.ViewModel.CourceCellViewModel
+
+protocol CourseCellViewModelProtocol {
+    var height: Double { get }
+    var courseName: String { get }
+    var imageData: Data? { get }
+    init(course: Course)
+}
+
 enum CourseList {
 
     // MARK: Use cases
-    enum Something {
-        struct Request {
-            
-        }
-        
+    enum ShowCourses {
         struct Response {
-            
+            let courses: [Course]?
         }
         
         struct ViewModel {
+            struct CourceCellViewModel: CourseCellViewModelProtocol {
+                var height: Double {
+                    100
+                }
+                
+                var courseName: String {
+                    course.name
+                }
+                
+                var imageData: Data? {
+                    ImageManager.shared.fetchImageData(from: course.imageURL)
+                }
+                
+                private let course: Course
+                
+                init(course: Course) {
+                    self.course = course
+                }
+            }
             
+            let rows: [CourseCellViewModel]
         }
     }
 }

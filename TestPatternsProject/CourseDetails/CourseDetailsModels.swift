@@ -12,7 +12,6 @@
 
 import Foundation
 
-typealias CourseDetailsRequest = CourseDetails.ShowDetails.Request
 typealias CourseDetailsResponse = CourseDetails.ShowDetails.Response
 typealias CourseDetailsViewModel = CourseDetails.ShowDetails.ViewModel
 
@@ -23,10 +22,6 @@ enum CourseDetails {
  
     // MARK: Use cases
     enum ShowDetails {
-        struct Request {
-            let course: Course
-        }
-        
         struct Response {
             let courseName: String?
             let numberOfLessons: Int?

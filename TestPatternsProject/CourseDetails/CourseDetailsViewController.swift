@@ -23,9 +23,7 @@ class CourseDetailsViewController: UIViewController {
     
     var interactor: CourseDetailsBusinessLogic?
     var router: (NSObjectProtocol & CourseDetailsRoutingLogic & CourseDetailsDataPassing)?
-    
-    var course: Course!
-    
+        
     private var courseNameLabel: UILabel =  {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 25, weight: .medium)
@@ -97,9 +95,8 @@ class CourseDetailsViewController: UIViewController {
     }
     
     private func passRequest() {
-        let request = CourseDetailsRequest(course: course)
         // сигнал интерактору для начала подготавки данных для отображения
-        interactor?.provideCourseDetails(request: request)
+        interactor?.provideCourseDetails()
     }
     
     // MARK: - Setup
