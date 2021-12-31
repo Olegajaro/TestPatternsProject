@@ -47,14 +47,14 @@ class CourseListViewController: UITableViewController {
     
     // MARK: - Routing
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let scene = segue.identifier {
-            let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
-            if let router = router, router.responds(to: selector) {
-                router.perform(selector, with: segue)
-            }
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if let scene = segue.identifier {
+//            let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
+//            if let router = router, router.responds(to: selector) {
+//                router.perform(selector, with: segue)
+//            }
+//        }
+//    }
     
     // MARK: - Helpers
     
@@ -120,17 +120,18 @@ extension CourseListViewController {
 // MARK: - UITableViewDelegate
 
 extension CourseListViewController {
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView,
+                            didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true )
         router?.routeToCourseDetails()
-//        print(router?.dataStore?.courses[indexPath.row].name ?? "123")
 //        let controller = CourseDetailsViewController()
 //        controller.course = course
 //
 //        navigationController?.pushViewController(controller, animated: true)
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView,
+                            heightForRowAt indexPath: IndexPath) -> CGFloat {
         CGFloat(rows[indexPath.row].height)
     }
 }

@@ -42,7 +42,7 @@ class CourseDetailsInteractor: CourseDetailsBusinessLogic, CourseDetailsDataStor
             isFavorite: isFavorite
         )
         presenter?.presentCourseDetails(response: response)
-        print(course?.name ?? "322")
+//        print(course?.name ?? "322")
     }
     
     func setFavoriteStatus() {

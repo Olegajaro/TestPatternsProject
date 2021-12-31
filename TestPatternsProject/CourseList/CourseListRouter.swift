@@ -34,10 +34,11 @@ class CourseListRouter: NSObject, CourseListRoutingLogic, CourseListDataPassing 
         let destinationVC = CourseDetailsViewController()
         var destinationDS = destinationVC.router!.dataStore!
         guard let dataStore = dataStore else { return }
-
-        passDataToCourseDetails(source: dataStore, destination: &destinationDS)
-        print(destinationDS.course?.name ?? "322")
-        navigateToCourseDetails(source: viewController, destination: destinationVC)
+        
+        passDataToCourseDetails(source: dataStore,
+                                destination: &destinationDS)
+        navigateToCourseDetails(source: viewController,
+                                destination: destinationVC)
     }
     /*
     func routeToSomewhere(segue: UIStoryboardSegue?) {
@@ -56,14 +57,19 @@ class CourseListRouter: NSObject, CourseListRoutingLogic, CourseListDataPassing 
     */
     
     // MARK: Navigation
-    func navigateToCourseDetails(source: CourseListViewController, destination: CourseDetailsViewController) {
-        source.navigationController?.pushViewController(destination, animated: true)
+    func navigateToCourseDetails(source: CourseListViewController,
+                                 destination: CourseDetailsViewController) {
+        source.navigationController?.pushViewController(destination,
+                                                        animated: true)
     }
     
     // MARK: Passing data
-    func passDataToCourseDetails(source: CourseListDataStore, destination: inout CourseDetailsDataStore) {
-        guard let indexPath = viewController?.tableView.indexPathForSelectedRow else { return }
+    func passDataToCourseDetails(source: CourseListDataStore,
+                                 destination: inout CourseDetailsDataStore) {
+        guard
+            let indexPath = viewController?.tableView.indexPathForSelectedRow
+        else { return }
+        
         destination.course = source.courses[indexPath.row]
     }
-    
 }
