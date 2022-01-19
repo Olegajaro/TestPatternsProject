@@ -90,19 +90,11 @@
 				109D84B827628287009E1C47 /* CourseList */,
 				10A89C88276276FD00B75A50 /* CourseDetails */,
 				10A89C7427620EDD00B75A50 /* Models */,
-				10A89C7327620EC400B75A50 /* ViewControllers */,
 				10A89C7927620F8600B75A50 /* Services */,
 				10A89C7827620F4600B75A50 /* Resources */,
 				10A89C7727620F0A00B75A50 /* Supporting Files */,
 			);
 			path = TestPatternsProject;
-			sourceTree = "<group>";
-		};
-		10A89C7327620EC400B75A50 /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 		10A89C7427620EDD00B75A50 /* Models */ = {

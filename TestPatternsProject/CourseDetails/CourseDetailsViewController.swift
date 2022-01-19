@@ -13,33 +13,33 @@ class CourseDetailsViewController: UIViewController {
     
     var viewModel: CourseDetailsViewModelProtocol!
     
-    private var courseNameLabel: UILabel =  {
+    private let courseNameLabel: UILabel =  {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 25, weight: .medium)
         label.numberOfLines = 0
         return label
     }()
     
-    private var courseImage: UIImageView = {
+    private let courseImage: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleToFill
         iv.backgroundColor = .systemGray
         return iv
     }()
     
-    private var numberOfLessons: UILabel = {
+    private let numberOfLessons: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
         return label
     }()
     
-    private var numberOfTests: UILabel = {
+    private let numberOfTests: UILabel = {
         let label = UILabel()
         label.font = UIFont.boldSystemFont(ofSize: 16)
         return label
     }()
     
-    private var favoriteButton: UIButton = {
+    private let favoriteButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         button.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 30),
